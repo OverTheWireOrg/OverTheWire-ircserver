@@ -1,0 +1,3 @@
+[submodule "inspircd-config"]
+	path = inspircd-config
+	url = pegasus:~/OverTheWire/inspircd-config/

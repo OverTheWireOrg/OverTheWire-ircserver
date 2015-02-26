@@ -1,0 +1,22 @@
+  - name: disable DNS resolution in sshd
+    lineinfile: "dest=/etc/ssh/sshd_config state=present regexp='^UseDNS ' line='UseDNS no'"
+    register: sshres
+
+  - name: restarting ssh if changes were made
+    service: name=ssh state=restarted
+    when: sshres.changed
+
+  - name: update apt cache
+    apt: update_cache=yes
+
+  - name: remove packages
+    apt: "name={{ item }} state=absent"
+    with_items:
+        - chef
+        - puppet
+
+  - name: install packages
+    apt: "name={{ item }} state=present"
+    with_items:
+        - unattended-upgrades
+        - git

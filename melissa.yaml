@@ -1,0 +1,18 @@
+---
+- hosts: melissa
+  sudo: true
+
+  roles:
+    - generic
+    - shorewall
+    - { 
+        role: dockerinstance, 
+        name: boobiesbot, 
+        dockerfile: "https://raw.githubusercontent.com/StevenVanAcker/OverTheWire-boobiesbot/master/Dockerfile",
+        datadir: "/usr/src/boobiesbot/data"
+      }
+    - { 
+        role: inspircd, 
+        confdir: "inspircd-config/"
+      }
+

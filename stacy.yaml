@@ -1,0 +1,12 @@
+---
+- hosts: stacy
+  sudo: true
+
+  roles:
+    - generic
+    - shorewall
+    - { 
+        role: inspircd, 
+        confdir: "inspircd-config/"
+      }
+

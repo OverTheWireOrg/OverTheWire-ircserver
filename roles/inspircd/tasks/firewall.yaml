@@ -1,0 +1,16 @@
+  - name: check if shorewall is installed
+    command: dpkg -s shorewall
+    register: shorewallinstalled
+    failed_when: false
+
+  - name: configure shorewall
+    lineinfile: "dest={{ item.filename }} line=\"{{ item.line }}\" state=present create=yes"
+    with_items:
+        - { filename: "/etc/shorewall/rules", line: "ACCEPT:info ext fw tcp 6666,6667,6697,7777" }
+    when: shorewallinstalled is defined and shorewallinstalled.rc == 0
+    notify:
+      - restart shorewall
+
+  - name: force reload shorewall
+    shell: "shorewall check && shorewall restart"
+    when: shorewallinstalled is defined and shorewallinstalled.rc == 0
