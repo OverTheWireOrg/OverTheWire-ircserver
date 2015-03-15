@@ -7,10 +7,22 @@
       apt: "name={{ item }} state=present"
       with_items:
         - irssi
+    - name: configure shorewall to allow incoming irc-server connections
+      lineinfile: "dest=/etc/shorewall/rules line=\"ACCEPT:info ext:{{item}} fw tcp 7029\" state=present create=yes"
+      with_items:
+          - 146.185.137.17    # melissa
+          - 46.101.57.19      # barbie
+          - 72.20.33.91       # irc1.us
+          - 174.37.216.199    # irc2.us
+          - 81.169.186.131    # irc3.de
+          - 5.9.146.202       # irc4.de
+      notify:
+        - restart shorewall
 
   roles:
     - generic
     - shorewall
+    - shorewall6
     - role: dockerinstance
       instances:
         - { 
