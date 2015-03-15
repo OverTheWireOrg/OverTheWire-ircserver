@@ -1,0 +1,25 @@
+---
+- hosts: barbie
+  sudo: true
+
+  tasks:
+    - name: install some packages
+      apt: "name={{ item }} state=present"
+      with_items:
+        - irssi
+
+  roles:
+    - generic
+    - shorewall
+    - role: dockerinstance
+      instances:
+        - { 
+            name: boobiesbot, 
+            uid: 5000,
+            dockerfile: "https://raw.githubusercontent.com/StevenVanAcker/OverTheWire-boobiesbot/master/Dockerfile"
+          }
+    - { 
+        role: inspircd, 
+        confdir: "inspircd-config/"
+      }
+
