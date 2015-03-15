@@ -15,3 +15,6 @@
 
   - name: force reload shorewall
     shell: "shorewall check && shorewall restart"
+
+  - name: start shorewall at boot
+    copy: src=shorewall dest=/etc/default/shorewall
