@@ -1,0 +1,20 @@
+  - name: check if shorewall6 is installed
+    apt: "name={{ item }} state=present"
+    with_items:
+      - shorewall6
+
+  - name: configure shorewall6
+    lineinfile: "dest={{ item.filename }} line=\"{{ item.line }}\" state=present create=yes"
+    with_items:
+        - { filename: "/etc/shorewall6/interfaces", line: "ext eth0" }
+        - { filename: "/etc/shorewall6/zones", line: "fw firewall" }
+        - { filename: "/etc/shorewall6/zones", line: "ext ipv6" }
+        - { filename: "/etc/shorewall6/policy", line: "all all DROP" }
+        - { filename: "/etc/shorewall6/rules", line: "ACCEPT:info ext fw tcp 22" }
+        - { filename: "/etc/shorewall6/rules", line: "ACCEPT:info fw  ext all" }
+
+  - name: force reload shorewall6
+    shell: "shorewall6 check && shorewall6 restart"
+
+  - name: start shorewall6 at boot
+    copy: src=shorewall6 dest=/etc/default/shorewall6
