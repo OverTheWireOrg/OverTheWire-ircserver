@@ -56,8 +56,16 @@
   when: item.changed
   with_items: imagetest.results
 
+- name: "create usergroup"
+  group: name={{item.name}} gid={{item.uid}}
+  with_items: instances
+
+- name: "create user"
+  user: name={{item.name}} uid={{item.uid}} group={{item.name}}
+  with_items: instances
+
 - name: "create datadirectory for {{ item.name }}"
-  file: "path=/usr/src/{{ item.name }}/data owner=vagrant group=vagrant state=directory"
+  file: "path=/usr/src/{{ item.name }}/data owner={{item.name}} group={{item.name}} state=directory"
   with_items: instances
 
 - name: "set supervisor config for {{ item.name }}"
