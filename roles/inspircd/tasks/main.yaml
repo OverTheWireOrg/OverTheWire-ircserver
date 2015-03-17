@@ -39,6 +39,11 @@
 
   - name: copy config files
     copy: "src={{confdir}} dest=/opt/inspircd/conf/ owner=irc group=irc mode=0640"
+    register: copiedconfig
+
+  - name: rehash inspircd config if needed
+    command: /etc/init.d/inspircd rehash
+    when: copiedconfig.changed
 
   - name: have the DH params been generated?
     stat: path=/opt/inspircd/conf/ssl/dhparams.pem
