@@ -2,6 +2,7 @@
     command: dpkg -s shorewall
     register: shorewallinstalled
     failed_when: false
+    changed_when: false
 
   - name: configure shorewall
     lineinfile: "dest={{ item.filename }} line=\"{{ item.line }}\" state=present create=yes"
@@ -10,15 +11,17 @@
     when: shorewallinstalled is defined and shorewallinstalled.rc == 0
     notify:
       - restart shorewall
+    register: shorewallconfig
 
   - name: force reload shorewall
     shell: "shorewall check && shorewall restart"
-    when: shorewallinstalled is defined and shorewallinstalled.rc == 0
+    when: shorewallconfig.changed
 
   - name: check if shorewall6 is installed
     command: dpkg -s shorewall6
     register: shorewall6installed
     failed_when: false
+    changed_when: false
 
   - name: configure shorewall6
     lineinfile: "dest={{ item.filename }} line=\"{{ item.line }}\" state=present create=yes"
@@ -27,7 +30,8 @@
     when: shorewall6installed is defined and shorewall6installed.rc == 0
     notify:
       - restart shorewall6
+    register: shorewall6config
 
   - name: force reload shorewall6
     shell: "shorewall6 check && shorewall6 restart"
-    when: shorewall6installed is defined and shorewall6installed.rc == 0
+    when: shorewall6config.changed

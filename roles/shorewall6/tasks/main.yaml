@@ -12,9 +12,11 @@
         - { filename: "/etc/shorewall6/policy", line: "all all DROP" }
         - { filename: "/etc/shorewall6/rules", line: "ACCEPT:info ext fw tcp 22" }
         - { filename: "/etc/shorewall6/rules", line: "ACCEPT:info fw  ext all" }
+    register: shorewall6config
 
   - name: force reload shorewall6
     shell: "shorewall6 check && shorewall6 restart"
+    when: shorewall6config.changed
 
   - name: start shorewall6 at boot
     copy: src=shorewall6 dest=/etc/default/shorewall6

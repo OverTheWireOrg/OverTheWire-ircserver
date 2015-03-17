@@ -2,6 +2,7 @@
     command: dpkg -s shorewall
     register: shorewallinstalled
     failed_when: false
+    changed_when: false
 
   - name: configure shorewall
     lineinfile: "dest={{ item.filename }} line=\"{{ item.line }}\" state=present create=yes"
@@ -12,11 +13,13 @@
         - { filename: "/etc/shorewall/rules", line: "ACCEPT:info dock fw tcp 6667" }
         - { filename: "/etc/shorewall/rules", line: "ACCEPT:info dock ext all" }
     when: shorewallinstalled is defined and shorewallinstalled.rc == 0
+    register: shorewallconfig
 
   - name: enable ipv4 forwarding
     lineinfile: dest=/etc/shorewall/shorewall.conf regexp="^IP_FORWARDING=" line="IP_FORWARDING=Yes" state=present
     when: shorewallinstalled is defined and shorewallinstalled.rc == 0
+    register: shorewallconfig2
 
   - name: force reload shorewall
     shell: "shorewall check && shorewall restart"
-    when: shorewallinstalled is defined and shorewallinstalled.rc == 0
+    when: shorewallconfig.changed or shorewallconfig2.changed
