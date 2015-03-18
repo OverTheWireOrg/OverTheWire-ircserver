@@ -1,1 +1,2 @@
 barbie	ansible_ssh_user=root ansible_ssh_host=barbie ansible_ssh_port=22
+melissa	ansible_ssh_user=root ansible_ssh_host=melissa ansible_ssh_port=22
