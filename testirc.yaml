@@ -11,18 +11,9 @@
   roles:
     - generic
     - shorewall
-    - role: dockerinstance
-      instances:
-        - { 
-            name: boobiesbot, 
-            dockerfile: "https://raw.githubusercontent.com/StevenVanAcker/OverTheWire-boobiesbot/master/Dockerfile"
-          }
-        #- { 
-        #    name: hintbot, 
-        #    dockerfile: "https://raw.githubusercontent.com/StevenVanAcker/OverTheWire-hintbot/master/Dockerfile"
-        #  }
     - { 
         role: inspircd, 
-        confdir: "inspircd-config/"
+        confdir: "inspircd-config/",
+        secretdir: "inspircd-secrets/"
       }
 

@@ -11,8 +11,8 @@ then
     exit 1
 fi
 
-cat conf/servers/config-myname.conf.template | sed 's:#<define:<define:'|sed "s:this-server-name:$hn:" > conf/servers/config-myname.conf
-chmod go= conf/servers/config-myname.conf
-chown irc.irc conf/servers/config-myname.conf
+cat conf/config-myname.conf.template | sed 's:#<define:<define:'|sed "s:this-server-name:$hn:" > conf/config-myname.conf
+chmod go= conf/config-myname.conf
+chown irc.irc conf/config-myname.conf
 
 exit 0

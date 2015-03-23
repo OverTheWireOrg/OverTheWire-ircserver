@@ -1,3 +1,6 @@
 [submodule "inspircd-config"]
 	path = inspircd-config
-	url = pegasus:~/OverTheWire/inspircd-config/
+	url = git@git.smashthestack.org:sts
+[submodule "inspircd-secrets"]
+	path = inspircd-secrets
+	url = pegasus:~/OverTheWire/inspircd-secrets/

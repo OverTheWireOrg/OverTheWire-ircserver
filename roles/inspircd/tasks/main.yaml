@@ -41,23 +41,27 @@
     copy: "src={{confdir}} dest=/opt/inspircd/conf/ owner=irc group=irc mode=0640"
     register: copiedconfig
 
+  - name: copy secret files
+    copy: "src={{secretdir}} dest=/opt/inspircd-secrets/ owner=irc group=irc mode=0640"
+    register: copiedsecrets
+
   - name: rehash inspircd config if needed
     command: /etc/init.d/inspircd rehash
-    when: copiedconfig.changed
+    when: copiedconfig.changed or copiedsecrets.changed
 
   - name: have the DH params been generated?
-    stat: path=/opt/inspircd/conf/ssl/dhparams.pem
+    stat: path=/opt/inspircd/conf/dhparams.pem
     register: dhparams
 
   - name: generate DH params if needed
-    command: certtool --generate-dh-params --sec-param high --outfile /opt/inspircd/conf/ssl/dhparams.pem
+    command: certtool --generate-dh-params --sec-param high --outfile /opt/inspircd/conf/dhparams.pem
     when: not dhparams.stat.exists
 
   - name: make sure inspircd starts on boot
     service: name=inspircd enabled=yes
 
   - name: is the hostname already configured in inspircd?
-    stat: path=/opt/inspircd/conf/servers/config-myname.conf
+    stat: path=/opt/inspircd/conf/config-myname.conf
     register: nameconfiged
 
   - name: configuring own hostname if needed
