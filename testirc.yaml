@@ -16,4 +16,11 @@
         confdir: "inspircd-config/",
         secretdir: "inspircd-secrets/"
       }
+    - role: dockerinstance
+      instances:
+        - {
+            name: boobiesbot,
+            uid: 5000,
+            dockerfile: "https://raw.githubusercontent.com/StevenVanAcker/OverTheWire-boobiesbot/master/Dockerfile"
+          }
 
