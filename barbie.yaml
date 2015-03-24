@@ -14,10 +14,12 @@
           - 46.101.57.19      # barbie
           - 72.20.33.91       # irc1.us
           - 174.37.216.199    # irc2.us
-          - 81.169.186.131    # irc3.de
+          # - 81.169.186.131    # irc3.de
           - 5.9.146.202       # irc4.de
       notify:
         - restart shorewall
+      tags:
+        - firewall
 
   roles:
     - generic
@@ -32,6 +34,7 @@
           }
     - { 
         role: inspircd, 
-        confdir: "inspircd-config/"
+        confdir: "inspircd-config/",
+        secretdir: "inspircd-secrets/"
       }
 

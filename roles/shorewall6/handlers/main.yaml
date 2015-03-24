@@ -1,2 +1,4 @@
 - name: restart shorewall6
   shell: "shorewall6 check && shorewall6 restart"
+  tags:
+      - firewall

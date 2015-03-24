@@ -40,22 +40,32 @@
   - name: copy config files
     copy: "src={{confdir}} dest=/opt/inspircd/conf/ owner=irc group=irc mode=0640"
     register: copiedconfig
+    tags:
+        - inspircdconfig
 
   - name: copy secret files
     copy: "src={{secretdir}} dest=/opt/inspircd-secrets/ owner=irc group=irc mode=0640"
     register: copiedsecrets
+    tags:
+        - inspircdconfig
 
   - name: rehash inspircd config if needed
     command: /etc/init.d/inspircd rehash
     when: copiedconfig.changed or copiedsecrets.changed
+    tags:
+        - inspircdconfig
 
   - name: have the DH params been generated?
     stat: path=/opt/inspircd/conf/dhparams.pem
     register: dhparams
+    tags:
+        - inspircdconfig
 
   - name: generate DH params if needed
     command: certtool --generate-dh-params --sec-param high --outfile /opt/inspircd/conf/dhparams.pem
     when: not dhparams.stat.exists
+    tags:
+        - inspircdconfig
 
   - name: make sure inspircd starts on boot
     service: name=inspircd enabled=yes
@@ -63,11 +73,17 @@
   - name: is the hostname already configured in inspircd?
     stat: path=/opt/inspircd/conf/config-myname.conf
     register: nameconfiged
+    tags:
+        - inspircdconfig
 
   - name: configuring own hostname if needed
     script: config-myname.sh
     when: not nameconfiged.stat.exists
+    tags:
+        - inspircdconfig
 
   - name: starting inspircd
     service: name=inspircd state=started
+    tags:
+        - inspircdconfig
 

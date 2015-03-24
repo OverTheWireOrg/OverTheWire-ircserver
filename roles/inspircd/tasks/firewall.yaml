@@ -3,6 +3,8 @@
     register: shorewallinstalled
     failed_when: false
     changed_when: false
+    tags:
+        - firewall
 
   - name: configure shorewall
     lineinfile: "dest={{ item.filename }} line=\"{{ item.line }}\" state=present create=yes"
@@ -12,16 +14,22 @@
     notify:
       - restart shorewall
     register: shorewallconfig
+    tags:
+        - firewall
 
   - name: force reload shorewall
     shell: "shorewall check && shorewall restart"
     when: shorewallconfig.changed
+    tags:
+        - firewall
 
   - name: check if shorewall6 is installed
     command: dpkg -s shorewall6
     register: shorewall6installed
     failed_when: false
     changed_when: false
+    tags:
+        - firewall
 
   - name: configure shorewall6
     lineinfile: "dest={{ item.filename }} line=\"{{ item.line }}\" state=present create=yes"
@@ -31,7 +39,11 @@
     notify:
       - restart shorewall6
     register: shorewall6config
+    tags:
+        - firewall
 
   - name: force reload shorewall6
     shell: "shorewall6 check && shorewall6 restart"
     when: shorewall6config.changed
+    tags:
+        - firewall

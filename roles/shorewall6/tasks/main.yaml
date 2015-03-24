@@ -2,6 +2,8 @@
     apt: "name={{ item }} state=present"
     with_items:
       - shorewall6
+    tags:
+        - firewall
 
   - name: configure shorewall6
     lineinfile: "dest={{ item.filename }} line=\"{{ item.line }}\" state=present create=yes"
@@ -13,10 +15,16 @@
         - { filename: "/etc/shorewall6/rules", line: "ACCEPT:info ext fw tcp 22" }
         - { filename: "/etc/shorewall6/rules", line: "ACCEPT:info fw  ext all" }
     register: shorewall6config
+    tags:
+        - firewall
 
   - name: force reload shorewall6
     shell: "shorewall6 check && shorewall6 restart"
     when: shorewall6config.changed
+    tags:
+        - firewall
 
   - name: start shorewall6 at boot
     copy: src=shorewall6 dest=/etc/default/shorewall6
+    tags:
+        - firewall

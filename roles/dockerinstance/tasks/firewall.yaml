@@ -3,6 +3,8 @@
     register: shorewallinstalled
     failed_when: false
     changed_when: false
+    tags:
+        - firewall
 
   - name: configure shorewall
     lineinfile: "dest={{ item.filename }} line=\"{{ item.line }}\" state=present create=yes"
@@ -14,12 +16,18 @@
         - { filename: "/etc/shorewall/rules", line: "ACCEPT:info dock ext all" }
     when: shorewallinstalled is defined and shorewallinstalled.rc == 0
     register: shorewallconfig
+    tags:
+        - firewall
 
   - name: enable ipv4 forwarding
     lineinfile: dest=/etc/shorewall/shorewall.conf regexp="^IP_FORWARDING=" line="IP_FORWARDING=Yes" state=present
     when: shorewallinstalled is defined and shorewallinstalled.rc == 0
     register: shorewallconfig2
+    tags:
+        - firewall
 
   - name: force reload shorewall
     shell: "shorewall check && shorewall restart"
     when: shorewallconfig.changed or shorewallconfig2.changed
+    tags:
+        - firewall
