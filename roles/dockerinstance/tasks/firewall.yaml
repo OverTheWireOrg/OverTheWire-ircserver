@@ -12,7 +12,7 @@
         - { filename: "/etc/shorewall/interfaces", line: "dock docker0" }
         - { filename: "/etc/shorewall/zones", line: "dock ipv4" }
         - { filename: "/etc/shorewall/masq", line: "eth0 172.17.0.0/16" }
-        - { filename: "/etc/shorewall/rules", line: "ACCEPT:info dock fw tcp 6667" }
+        - { filename: "/etc/shorewall/rules", line: "ACCEPT:info dock fw tcp 6667,27017" }
         - { filename: "/etc/shorewall/rules", line: "ACCEPT:info dock ext all" }
     when: shorewallinstalled is defined and shorewallinstalled.rc == 0
     register: shorewallconfig

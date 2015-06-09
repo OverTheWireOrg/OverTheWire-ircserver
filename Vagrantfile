@@ -3,7 +3,7 @@ VAGRANTFILE_API_VERSION = "2"
 # vagrant box add utopic64 https://cloud-images.ubuntu.com/vagrant/utopic/current/utopic-server-cloudimg-amd64-vagrant-disk1.box
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "utopic64"
+  config.vm.box = "ubuntu/utopic64"
   #config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = "testirc"
   config.vm.network "forwarded_port", guest: 6697, host: 6697

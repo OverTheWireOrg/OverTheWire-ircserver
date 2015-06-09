@@ -7,6 +7,16 @@
       apt: "name={{ item }} state=present"
       with_items:
         - irssi
+        - mongodb-server
+
+    - name: configure mongodb
+      lineinfile: dest=/etc/mongodb.conf regexp="^bind_ip" line="bind_ip = 0.0.0.0" state=present create=yes
+      register: mongodbconf
+
+    - name: restarting mongodb if needed
+      service: name=mongodb state=restarted
+      when: mongodbconf.changed
+
     - name: configure shorewall to allow incoming irc-server connections
       lineinfile: "dest=/etc/shorewall/rules line=\"ACCEPT:info ext:{{item}} fw tcp 7029\" state=present create=yes"
       with_items:

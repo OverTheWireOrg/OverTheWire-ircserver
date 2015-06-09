@@ -14,9 +14,8 @@
     file: path=/opt/inspircd state=directory mode=0750 owner=irc group=root
 
   - name: get inspircd code from github
-    git: repo=https://github.com/inspircd/inspircd.git
-         dest=/usr/src/inspircd
-         version=v2.0.18
+    #git: repo=https://github.com/inspircd/inspircd.git dest=/usr/src/inspircd version=v2.0.18
+    git: repo=https://github.com/StevenVanAcker/inspircd.git dest=/usr/src/inspircd version=v2.0.18-initfix
     register: gitclone
 
   - name: was there a previous compile that failed?

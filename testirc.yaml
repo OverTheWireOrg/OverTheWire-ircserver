@@ -7,6 +7,15 @@
       apt: "name={{ item }} state=present"
       with_items:
         - irssi
+        - mongodb-server
+
+    - name: configure mongodb
+      lineinfile: dest=/etc/mongodb.conf regexp="^bind_ip" line="bind_ip = 0.0.0.0" state=present create=yes
+      register: mongodbconf
+
+    - name: restarting mongodb if needed
+      service: name=mongodb state=restarted
+      when: mongodbconf.changed
 
   roles:
     - generic

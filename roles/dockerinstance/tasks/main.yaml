@@ -52,7 +52,7 @@
   with_items: instances
 
 - name: "build Dockerfile for {{item.item.name}}"
-  shell: "cd /usr/src/{{ item.item.name }} && docker build -t {{ item.item.name }} ."
+  shell: "cd /usr/src/{{ item.item.name }} && docker build --no-cache -t {{ item.item.name }} ."
   when: item.changed
   with_items: imagetest.results
 
