@@ -1,0 +1,13 @@
+[Unit]
+Description=InspIRCD server
+After=network.target auditd.service
+
+[Service]
+Type=forking
+ExecStart=/etc/init.d/inspircd start
+ExecStop=/etc/init.d/inspircd stop
+ExecReload=/etc/init.d/inspircd reload
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
