@@ -17,6 +17,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      vb.customize ["modifyvm", :id, "--memory", "1524"]
   end
 
+  config.vm.provider :digital_ocean do |provider, override|
+     provider.image = "ubuntu-15-10-x64"
+  end
+
   config.vm.provision :ansible do |ansible|
     ansible.playbook = "testirc.yaml"
     #ansible.verbose = "vvvv"
