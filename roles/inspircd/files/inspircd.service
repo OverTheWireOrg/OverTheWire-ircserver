@@ -4,9 +4,9 @@ After=network.target auditd.service
 
 [Service]
 Type=forking
-ExecStart=/etc/init.d/inspircd start
-ExecStop=/etc/init.d/inspircd stop
-ExecReload=/etc/init.d/inspircd reload
+ExecStart=/opt/inspircd/inspircd start
+ExecStop=/opt/inspircd/inspircd stop
+ExecReload=/opt/inspircd/inspircd reload
 Restart=on-failure
 
 [Install]

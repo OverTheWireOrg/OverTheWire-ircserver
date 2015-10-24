@@ -9,23 +9,23 @@
 - name: update apt
   apt: update_cache=yes upgrade=dist
 
-- name: install kernel extras for AUFS
-  apt: pkg=linux-image-extra-virtual state=present
-  register: needsreboot
-
-- name: reboot machine if needed
-  command: /sbin/reboot now 
-  when: needsreboot.changed 
- 
-- name: wait until rebooted... 
-  local_action: wait_for host={{ ansible_ssh_host }} port={{ ansible_ssh_port }} state=started search_regex=OpenSSH timeout=300 delay=20 
-  sudo: no
-  when: needsreboot.changed 
- 
-- name: is it running?
-  command: uptime  
-  when: needsreboot.changed 
-  changed_when: false
+###= - name: install kernel extras for AUFS
+###=   apt: pkg=linux-image-extra-virtual state=present
+###=   register: needsreboot
+###= 
+###= - name: reboot machine if needed
+###=   command: /sbin/reboot now 
+###=   when: needsreboot.changed 
+###=  
+###= - name: wait until rebooted... 
+###=   local_action: wait_for host={{ ansible_ssh_host }} port={{ ansible_ssh_port }} state=started search_regex=OpenSSH timeout=300 delay=20 
+###=   sudo: no
+###=   when: needsreboot.changed 
+###=  
+###= - name: is it running?
+###=   command: uptime  
+###=   when: needsreboot.changed 
+###=   changed_when: false
 
 - name: install packages
   apt: "pkg={{ item }} state=present"

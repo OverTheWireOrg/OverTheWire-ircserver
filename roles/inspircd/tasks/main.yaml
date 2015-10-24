@@ -14,8 +14,8 @@
     file: path=/opt/inspircd state=directory mode=0750 owner=irc group=root
 
   - name: get inspircd code from github
-    #git: repo=https://github.com/inspircd/inspircd.git dest=/usr/src/inspircd version=v2.0.18
-    git: repo=https://github.com/StevenVanAcker/inspircd.git dest=/usr/src/inspircd version=v2.0.18-initfix
+    git: repo=https://github.com/inspircd/inspircd.git dest=/usr/src/inspircd version=v2.0.20
+    #git: repo=https://github.com/StevenVanAcker/inspircd.git dest=/usr/src/inspircd version=v2.0.18-initfix
     register: gitclone
 
   - name: was there a previous compile that failed?
@@ -33,8 +33,8 @@
         - "rm -f /opt/inspircd/.needsupdate"
     when: gitclone.changed or needsupdate.stat.exists
 
-  - name: create symlink to init-script
-    file: path=/etc/init.d/inspircd src=/opt/inspircd/inspircd state=link
+#  - name: create symlink to init-script
+#    file: path=/etc/init.d/inspircd src=/opt/inspircd/inspircd state=link
 
   - name: install systemd service file
     copy: src=inspircd.service dest=/lib/systemd/system/inspircd.service
@@ -52,7 +52,7 @@
         - inspircdconfig
 
   - name: rehash inspircd config if needed
-    command: /etc/init.d/inspircd rehash
+    service: name=inspircd state=reloaded
     when: copiedconfig.changed or copiedsecrets.changed
     tags:
         - inspircdconfig
