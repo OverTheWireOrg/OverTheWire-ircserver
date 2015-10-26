@@ -1,5 +1,5 @@
 ---
-- hosts: melissa
+- hosts: roxanne
   sudo: true
   gather_facts: no
 
@@ -19,6 +19,7 @@
       with_items:
           - 188.226.251.4     # melissa
           - 46.101.57.19      # barbie
+          - 104.236.167.230   # roxanne
           - 104.236.167.230   # roxanne
           - 72.20.33.91       # irc1.us
           - 174.37.216.199    # irc2.us
