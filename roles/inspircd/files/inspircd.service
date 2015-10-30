@@ -6,7 +6,7 @@ After=network.target auditd.service
 Type=forking
 ExecStart=/opt/inspircd/inspircd start
 ExecStop=/opt/inspircd/inspircd stop
-ExecReload=/opt/inspircd/inspircd reload
+ExecReload=/opt/inspircd/inspircd rehash
 Restart=on-failure
 
 [Install]

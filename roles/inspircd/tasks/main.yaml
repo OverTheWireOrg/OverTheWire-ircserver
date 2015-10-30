@@ -38,6 +38,15 @@
 
   - name: install systemd service file
     copy: src=inspircd.service dest=/lib/systemd/system/inspircd.service
+    register: copiedsystemdconfig
+    tags:
+        - inspircdconfig
+  - name: reload systemctl if it exists
+    command: systemctl daemon-reload
+    when: copiedsystemdconfig.changed
+    failed_when: false
+    tags:
+        - inspircdconfig
 
   - name: copy config files
     copy: "src={{confdir}} dest=/opt/inspircd/conf/ owner=irc group=irc mode=0640"
