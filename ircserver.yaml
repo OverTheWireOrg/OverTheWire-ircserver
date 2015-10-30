@@ -4,6 +4,7 @@
   gather_facts: no
 
   pre_tasks:
+    - debug: var=ansible_hostname
     - name: install python if it is not there already
       raw: apt-get update && apt-get -y install python
     - name: Gathering facts
@@ -11,6 +12,9 @@
     - name: make sure openvpn is stopped
       service: name=openvpn state=stopped
       failed_when: false
+    - name: set hostname in case vagrant fucks up
+      shell: "hostnamectl set-hostname {{ ansible_hostname }}"
+      when: from_vagrant is defined and from_vagrant
 
   tasks:
     - name: install some packages
@@ -35,6 +39,22 @@
     - name: make sure openvpn is started
       service: name=openvpn state=started
 
+    - name: install some packages
+      apt: "name={{ item }} state=present"
+      with_items:
+        - mongodb-server
+      when: runboobiesbot is defined and runboobiesbot
+
+    - name: configure mongodb
+      lineinfile: dest=/etc/mongodb.conf regexp="^bind_ip" line="bind_ip = 0.0.0.0" state=present create=yes
+      register: mongodbconf
+      when: runboobiesbot is defined and runboobiesbot
+
+    - name: restarting mongodb if needed
+      service: name=mongodb state=restarted
+      when: mongodbconf.changed
+      when: runboobiesbot is defined and runboobiesbot
+
   roles:
     - generic
     - shorewall
@@ -45,4 +65,12 @@
         secretdir: "inspircd-secrets/"
       }
     - vpnserver
+    - role: dockerinstance
+      instances:
+        - {
+            name: boobiesbot,
+            uid: 5000,
+            dockerfile: "https://raw.githubusercontent.com/StevenVanAcker/OverTheWire-boobiesbot/master/Dockerfile"
+          }
+      when: runboobiesbot is defined and runboobiesbot
 
