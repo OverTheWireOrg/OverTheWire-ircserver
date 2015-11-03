@@ -27,7 +27,6 @@
     - name: configure shorewall to allow incoming irc-server connections
       lineinfile: "dest=/etc/shorewall/rules line=\"ACCEPT:info ext:{{item}} fw tcp 7029\" state=present create=yes"
       with_items:
-          - 188.226.251.4     # melissa
           - 46.101.57.19      # barbie
           - 104.131.10.16     # roxanne
           - 72.20.33.91       # irc1.us
