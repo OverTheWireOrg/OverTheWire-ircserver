@@ -1,4 +1,0 @@
-- name: restart shorewall
-  shell: "shorewall check && shorewall restart"
-  tags:
-      - firewall
