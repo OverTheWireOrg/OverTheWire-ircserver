@@ -4,3 +4,6 @@
 [submodule "inspircd-secrets"]
 	path = inspircd-secrets
 	url = pegasus:~/OverTheWire/inspircd-secrets/
+[submodule "ansible-roles"]
+	path = roles
+	url = https://github.com/StevenVanAcker/ansible-roles.git

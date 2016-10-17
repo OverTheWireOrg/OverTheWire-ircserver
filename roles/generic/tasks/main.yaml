@@ -21,3 +21,9 @@
         - unattended-upgrades
         - git
         - vim
+
+  - name: install vimrc
+    copy: src=vimrc dest=/etc/vim/vimrc
+
+  - name: set LC_ALL=C
+    lineinfile: dest=/etc/bash.bashrc state=present line="export LC_ALL=C"

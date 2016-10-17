@@ -5,6 +5,11 @@
     tags:
         - firewall
 
+  - name: make sure shorewall6 is enabled
+    service: name=shorewall6 enabled=yes
+    tags:
+        - firewall
+
   - name: configure shorewall6
     lineinfile: "dest={{ item.filename }} line=\"{{ item.line }}\" state=present create=yes"
     with_items:
