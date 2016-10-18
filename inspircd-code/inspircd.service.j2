@@ -1,0 +1,13 @@
+[Unit]
+Description=InspIRCd container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run --rm --name inspircd -p 6666-6667:6666-6667 -p 6697:6697 -p 7029:7029 -v /usr/src/OverTheWire-ircserver/inspircd-config:/opt/inspircd/conf -v /usr/src/OverTheWire-ircserver/inspircd-secrets:/opt/inspircd-secrets inspircd /launch.sh {{ansible_hostname}}
+ExecStop=/usr/bin/docker stop inspircd
+ExecStopPost=/usr/bin/docker rm -f inspircd
+
+[Install]
+WantedBy=default.target

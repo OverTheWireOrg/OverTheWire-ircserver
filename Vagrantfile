@@ -21,12 +21,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      provider.image = "ubuntu-15-10-x64"
   end
 
+  config.vm.provider :aws do |aws, override|
+     # aws.ami = "ami-20551f37" # Ubuntu yakkety 16.10 HVM SSD
+     aws.instance_type = "t2.medium"
+  end
+
   config.vm.provision :ansible do |ansible|
     ansible.playbook = "ircserver.yaml"
     ansible.extra_vars = {
-      ansible_hostname: "testirc",
+      ansible_hostname: "roxanne",
       from_vagrant: true,
-      runboobiesbot: true,
+      runboobiesbot: false,
     }
     #ansible.verbose = "vvvv"
   end
